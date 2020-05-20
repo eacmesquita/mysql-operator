@@ -1,0 +1,28 @@
+---
+- name: start memcached
+  community.kubernetes.k8s:
+    definition:
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ meta.name }}-mysql'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: "{{size}}"
+        selector:
+          matchLabels:
+            app: mysql
+        template:
+          metadata:
+            labels:
+              app: mysql
+          spec:
+            containers:
+            - name: mysql
+              image: "mysql:5.6"
+              env:
+              - name: MYSQL_ROOT_PASSWORD
+                value: password	
+              ports:
+                - containerPort: 3306
+
